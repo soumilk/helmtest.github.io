@@ -1,0 +1,48 @@
+1. Helm in very simple terms is a package manager for kubernetes, i.e. any kind of application to be
+run on the kubernets. 
+2. What is the need of Helm ?
+    Lets say we have an application, now we want to distribute that application which consists of 
+    several configs and kubernetes YAML files, now without any package manager I need to upload them
+    all in a repo / merge the YAML files and store it in a repo, now a person who want to get the 
+    application will go and get the YAML from there and install it 
+    There are several challenges in this approach :
+        1. If we need to provide the update of the application, then in that case it will be difficult 
+        to go and reapply the YAML files one by one. 
+        2. How to search other applications, as there is no centralised place.
+
+    Helm is just like npm or other package managers which solve the above problems and also has other
+    advantages. 
+
+3. Helm Chart : It is just synnonyms to the application itself, the chart is nothing but all 
+the YAMLS and the configurations requried to run the application. 
+
+4. There could be multiple releases of the same helm  chart using deffierent names.
+5. When we do create a helm chart : 
+    helm create demo-app 
+        1. In the created folder structure, if the application depends on another chart, then the 
+        details of that chart is stored in the charts folder.
+        2. There are many helm template funcitons present which can be used :
+            {{ .Values.storageClass.name | quote }}  => Output will be quoted
+
+6. To run the application we can provide these commands to see the consolidated helm :  
+    helm install <release_name> -n <namespace> <helm-repo> --dry-run 
+
+7. A very simple way to install the application via helm is to put all the YAML files requried
+to run the application in the templates folder of the helm repo and just use helm install command.
+Although its not an ideal helm chart, because there is not scope of customizations.
+
+8. The Standard use of the helm is, the helm charts are created for a single application.
+9. Notes.txt is the file that will be shown when the chart is installed.
+
+10. Every file in the templates folder in the Helm repo is considered as the kubernetes resource 
+manifest apart from some specific files such as the files starting from the '_' and the Notes.txt.
+
+11. In the .tpl files, we can define the functions and give logics to them. Those functions can be 
+used at certain places in the helm templates.
+
+12. To package and publish the chart: 
+    1. helm package chart_name -d folder_to_package_in
+    eg: helm package helm -d charts
+    2. helm repo index charts
+    3. Expose the branch on the github pages.
+    4. Add the helm repo in the system
